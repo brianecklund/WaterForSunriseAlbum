@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Text Effects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@100..1000&display=swap" rel="stylesheet">
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Roboto Flex', sans-serif;
+        }
+
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -100;
+        }
+
+        .video-background video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: cover;
+            /* Ensures video covers the entire area */
+        }
+
+        .animated-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            user-select: none;
+        }
+
+        .animated-text span {
+            font-family: 'Roboto Flex', sans-serif;
+            font-variation-settings: 'wght' 400;
+            font-size: calc(5vw + 1vmin);
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .animated-text span:hover {
+            font-variation-settings: 'wght' 1000;
+        }
+
+        .animated-text .word-spacing {
+            margin: 0 1vw;
+            /* Margin for word spacing */
+        }
+
+        .signature {
+            position: fixed;
+            bottom: 50px;
+            right: 50px;
+            font-family: 'Roboto Flex', sans-serif;
+            font-variation-settings: 'wght' 400;
+            font-size: 1.5em;
+            color: white;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: transform 0.5s ease-out, font-variation-settings 0.3s ease;
+            user-select: none;
+        }
+
+        .gif-image {
+            position: fixed;
+            top: 25px;
+            left: 0px;
+            width: 144px;
+            height: 108px;
+            z-index: 100;
+            mix-blend-mode: screen;
+            user-select: none;
+        }
+
+        .bottom-center-audio-player {
+            position: fixed;
+            bottom: 50px;
+            /* 50 pixels from the bottom edge */
+            left: 50%;
+            /* Centered horizontally */
+            transform: translateX(-50%);
+            /* Adjust for the center alignment */
+            display: flex;
+            /* Aligns the child elements (buttons and slider) in a row */
+            align-items: center;
+            /* Center-align the items vertically */
+            gap: 10px;
+            /* Optional: Adds some space between the buttons and the slider */
+        }
+
+        .clickable-word {
+            font-family: 'Roboto Flex', sans-serif;
+            /* Choose your desired font */
+            font-variation-settings: 'wght' 400;
+            font-size: 1rem;
+            /* Adjust font size as needed */
+            line-height: 5px;
+            color: white;
+            /* Choose your text color */
+            cursor: pointer;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            /* Smooth transition for animation and fade */
+            opacity: 0;
+            /* Start with text invisible */
+        }
+
+        .clickable-word.visible {
+            opacity: 1;
+            /* Make text visible on click */
+        }
+
+        .menu-btn {
+            position: fixed;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1001;
+            background: none;
+            border: 1px solid white;
+            border-radius: 40px;
+            padding: 10px 25px;
+            color: white;
+            /* Ensure it's above other elements */
+            /* Additional styling for the button */
+        }
+
+        .fullscreen-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Set the height to full viewport */
+            max-height: 100vh;
+            /* Maximum height to viewport height */
+            overflow-y: auto;
+            /* Enables vertical scrolling */
+            display: flex;
+            justify-content: center;
+            /* Centers content horizontally */
+            align-items: center;
+            /* Centers content vertically */
+            flex-direction: column;
+            /* Aligns children vertically */
+            background-color: rgb(0, 0, 0);
+            /* Example background with some transparency */
+            z-index: 1000;
+            /* Ensures it's above other elements */
+            transition: top 0.5s ease;
+            /* Smooth transition for sliding down and up */
+        }
+
+        .fullscreen-menu.open {
+            display: block;
+            /* Show menu when open */
+        }
+
+        #track-list {
+            list-style-type: none;
+            /* Removes default list styling */
+            padding: 0;
+            width: 30%;
+            /* Adjust as needed, but not 100% to avoid full width */
+            margin: auto;
+            /* Center the list */
+            margin-top: 200px;
+            text-align: center;
+            color: white;
+        }
+
+        #track-list li {
+            padding: 20px;
+            /* Adjust padding as needed */
+            border-bottom: 1px solid white;
+            /* Horizontal line between items */
+            cursor: pointer;
+            /* Change cursor on hover */
+            text-align: left;
+        }
+
+        #track-list li:last-child {
+            border-bottom: none;
+            /* No border for the last item */
+        }
+
+        #click-message {
+            position: fixed;
+            pointer-events: none;
+            /* Allows the cursor to 'click through' the message */
+            display: none;
+            /* Initially hidden */
+            color: white;
+            font-family: 'Roboto Flex', sans-serif;
+            border-radius: 40px;
+            padding: 10px 25px;
+            background: transparent;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="video-background">
+        <video autoplay muted loop>
+            <source src="compilation.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <div id="click-message">Click anywhere to begin</div>
+
+    <!-- Menu Button -->
+    <button id="menu-toggle-btn" class="menu-btn">Tracklist</button>
+
+    <!-- Full Screen Menu -->
+    <div id="fullscreen-menu" class="fullscreen-menu">
+        <ul id="track-list">
+            <li data-track="mp3/warm-winter.mp3">1. Warm Winter</li>
+            <li data-track="mp3/july.mp3">2. July</li>
+            <li data-track="mp3/hero-of-nothing.mp3">3. Hero of Nothing</li>
+            <li data-track="mp3/swirl.mp3">4. Swirl</li>
+            <li data-track="mp3/mess.mp3">5. Mess</li>
+            <li data-track="mp3/house.mp3">6. House</li>
+            <li data-track="mp3/current-function.mp3">7. Current Function</li>
+            <li data-track="mp3/its-around-me.mp3">8. It's Around Me</li>
+            <li data-track="mp3/december.mp3">9. December</li>
+            <li data-track="mp3/place-of-nothing.mp3">10. Place of Nothing</li>
+            <li data-track="mp3/door.mp3">11. Door</li>
+            <li data-track="mp3/skipped-out.mp3">12. Skipped Out</li>
+            <li data-track="mp3/ill-always-be-there.mp3">13. I'll Always Be There</li>
+            <li data-track="mp3/height-of-nothing.mp3">14. Height of Nothing</li>
+            <li data-track="mp3/hipfire-oasis.mp3">15. Hipfire Oasis</li>
+            <li data-track="mp3/heart-of-nothing.mp3">16. Heart of Nothing</li>
+            <!-- Add more tracks as needed -->
+        </ul>
+    </div>
+
+    <!-- Audio Player Container -->
+    <div id="audio-player-container" class="bottom-center-audio-player">
+        <audio id="my-audio" preload="auto">
+            <source src="classical.mp3" type="audio/mp3">
+            Your browser does not support the audio tag.
+        </audio>
+        <button id="play-pause-btn">Play</button>
+        <input type="range" id="seek-bar" value="0">
+        <button id="mute-btn">Mute</button>
+    </div>
+
+    <!-- Add the GIF image -->
+    <img src="globe.gif" alt="Animated GIF" class="gif-image">
+
+    <div class="animated-text">
+        <!-- Wrap each character in its own span for "Water for Sunrise" -->
+        <span>W</span><span>a</span><span>t</span><span>e</span><span>r</span>
+        <span class="word-spacing"></span> <!-- Word spacing -->
+        <span>f</span><span>o</span><span>r</span>
+        <span class="word-spacing"></span> <!-- Word spacing -->
+        <span>S</span><span>u</span><span>n</span><span>r</span><span>i</span><span>s</span><span>e</span>
+    </div>
+
+    <div class="signature">
+        <!-- Wrap each character in its own span -->
+        <span>A</span><span>
+        </span><span>D</span><span>i</span><span>g</span><span>i</span><span>t</span><span>a</span><span>l</span><span>
+        </span>
+        <span>E</span><span>x</span><span>p</span><span>r</span><span>e</span><span>s</span><span>s</span><span>i</span><span>o</span><span>n</span><span>
+        </span>
+        <span>b</span><span>y</span><span>
+        </span><span>B</span><span>r</span><span>i</span><span>a</span><span>n</span><span> </span>
+        <span>E</span><span>c</span><span>k</span><span>l</span><span>u</span><span>n</span><span>d</span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+// Settings for text animation and mouse events
+const minWeightCenter = 100;
+        const maxWeightCenter = 1000;
+        const maxDistanceCenter = 600; // Specific distance for centered text
+        const minWeightSignature = 100;
+        const maxWeightSignature = 1000;
+        const maxDistanceSignature = 150; // Different distance for signature text
+
+                            // The block of text from which sentences will be taken
+                            const blockOfText = "In the vastness of space, amidst a dance of celestial bodies, Earth spins, a mosaic of blue and green. This ancient orb, cradled in the cosmic expanse, bears witness to the unfolding story of humanity. From the dawn of our existence, humans have walked this earth, leaving footprints in the sands of time. We emerged as curious beings, marveling at the mysteries of fire and wheel, carving our presence into the very fabric of nature. Forests, ancient and wise, stood as silent guardians of a world yet untouched. Rivers, like serpentine jewels, meandered through landscapes, nurturing life in their embrace. The earth sang a song of balance, an intricate symphony of ecosystems interwoven and interdependent. Then came the age of discovery, a time when human ingenuity blossomed. We built cities that reached for the skies, marvels of engineering and art. We connected distant lands with roads and bridges, shrinking the vastness of our world. Our minds, ever curious, sought to understand the secrets of the universe, reaching out to touch the stars. But as we grew, so did our footprint. The once pristine landscapes began to bear the scars of our progress. Forests, those ancient sentinels, fell to the relentless march of our machines. Rivers, once clear and vibrant, muddied under the burden of our waste. Skies, which held the dreams of star-gazers, grew dim with the haze of our industries. Animals, companions in our journey on Earth, dwindled in numbers, their whispers fading into silence. The oceans, vast and mysterious, began to swell with the remnants of our existence. In this age of acceleration, we molded the earth to our desires. We dug deep into its crust, extracting treasures buried for eons. We harnessed the energy of atoms and elements, igniting power that both illuminates and destroys. Yet, amidst this relentless push, a new awareness has begun to dawn. Voices, diverse and passionate, rise in defense of this planet we call home. They speak of balance, of respect for the intricate web of life that sustains us. We stand at a crossroads, where every action, every decision, weaves into the tapestry of Earth's future. We learn, slowly, the language of sustainability, a dialogue that seeks harmony with nature rather than conquest. In laboratories and think tanks, minds come together, seeking solutions. Renewable energy whispers promises of a cleaner world, where the wind, sun, and sea power our dreams without the shadow of pollution. Conservation efforts grow, a global movement to protect and rejuvenate. We plant trees, restore habitats, and learn to coexist with the wild. We see the earth not as a resource to be exploited, but as a legacy to be cherished. The story of humanity is complex, a narrative of creativity and destruction, of enlightenment and ignorance. We have the power to shape this planet, for better or worse. Our choices ripple through time, affecting generations yet unborn. We are but temporary stewards of this blue and green oasis. The earth, in its timeless journey, will endure long after our chapters are written. But the mark we leave, the echo of our existence, is ours to define. This is our moment, a time to reflect, to act with wisdom and compassion. We hold the future in our hands, a future where humanity and Earth thrive together. In this shared journey, let us choose a path of harmony, a path that honors the delicate balance of life. For we are part of this world, woven into its fabric. Our destiny is entwined with the destiny of the earth. May we tread lightly, with reverence for the life that surrounds us. May we be the architects of a legacy that speaks not of conquest, but of stewardship and love. Let this be our vow, to nurture and protect, to heal the wounds we have inflicted. In our hands lies the power to shape a world of beauty and abundance, a world where every living being can flourish. So let us step forward, mindful of our impact, committed to a future where humanity and Earth exist in harmony. For in this delicate balance lies our hope, our salvation, our legacy.";
+
+// Split the block of text into sentences
+const sentences = blockOfText.split('. ');
+let sentenceIndex = 0;
+
+            var clickMessage = document.getElementById('click-message');
+            var isFirstClick = true;
+
+            // Function to move the click message with the cursor
+            function moveClickMessage(e) {
+                clickMessage.style.left = e.pageX + 'px';
+                clickMessage.style.top = e.pageY + 'px';
+            }
+
+            // Function to handle the first click
+            document.addEventListener('click', function (e) {
+                if (isFirstClick) {
+                    if (!e.target.closest('.animated-text')) {
+                        addFallingText(e);
+                    }
+                    isFirstClick = false;
+                    clickMessage.style.display = 'none'; // Hide the 'Click anywhere to begin' message
+                }
+            });
+
+            // Initially show the click message and attach event listeners
+            clickMessage.style.display = 'block';
+            document.addEventListener('mousemove', moveClickMessage);
+
+            // Function to add falling text
+            function addFallingText(e) {
+                if (sentenceIndex < sentences.length) {
+                let words = sentences[sentenceIndex].split(' ');
+                    let wordElements = [];
+                    let wordIndex = 0;
+
+                    const addWord = () => {
+                        if (wordIndex < words.length) {
+                            const newWord = document.createElement('span');
+                            newWord.textContent = words[wordIndex];
+                            newWord.style.position = 'absolute';
+                            newWord.style.left = `${e.clientX}px`;
+                            newWord.style.top = `${e.clientY + wordIndex * 30}px`;
+                            newWord.classList.add('animated-text', 'clickable-word');
+
+                            document.body.appendChild(newWord);
+                            setTimeout(() => {
+                                newWord.classList.add('visible');
+                            }, 50);
+
+                            wordElements.push(newWord);
+                            wordIndex++;
+
+                            // Start removing words when half of the sentence is displayed
+                            if (wordIndex == Math.ceil(words.length / 2)) {
+                                removeWords();
+                            }
+
+                            setTimeout(addWord, 500); // Add next word after 500ms
+                        }
+                    };
+
+                    const removeWords = () => {
+                        if (wordElements.length > 0) {
+                            const wordToRemove = wordElements.shift();
+                            wordToRemove.classList.remove('visible');
+                            setTimeout(() => wordToRemove.remove(), 500);
+                            setTimeout(removeWords, 500);
+                        }
+                    };
+
+                    addWord();
+                    sentenceIndex++;
+                }
+            }
+
+            // Audio player elements
+            var myAudio = document.getElementById('my-audio');
+            var playPauseBtn = document.getElementById('play-pause-btn');
+            var muteBtn = document.getElementById('mute-btn');
+            var seekBar = document.getElementById('seek-bar');
+
+            // Track list and menu elements
+            var trackList = document.getElementById('track-list').getElementsByTagName('li');
+            var currentTrackIndex = 0;
+            var isFirstClick = true;
+            var menuBtn = document.getElementById('menu-toggle-btn');
+            var fullscreenMenu = document.getElementById('fullscreen-menu');
+            var isMenuOpen = false;
+
+            // Function to play a specific track
+            function playTrack(index) {
+                if (index < trackList.length) {
+                    myAudio.src = trackList[index].getAttribute('data-track');
+                    myAudio.play();
+                    currentTrackIndex = index;
+                }
+            }
+
+            // Play the first track on first user click
+            document.addEventListener('click', function (e) {
+                if (isFirstClick && !e.target.closest('.menu-btn, .bottom-center-audio-player')) {
+                    playTrack(0);
+                    isFirstClick = false;
+                }
+            });
+
+            // Auto-play next track when current one ends
+            myAudio.addEventListener('ended', function () {
+                if (currentTrackIndex + 1 < trackList.length) {
+                    playTrack(currentTrackIndex + 1);
+                }
+            });
+
+            // Track selection from menu
+            for (var i = 0; i < trackList.length; i++) {
+                trackList[i].addEventListener('click', function () {
+                    var trackIndex = Array.prototype.indexOf.call(trackList, this);
+                    playTrack(trackIndex);
+                    // Close the fullscreen menu
+                    fullscreenMenu.style.top = '-100%';
+                });
+            }
+
+            // Function to calculate and apply font weight based on mouse proximity
+            function applyFontWeightEffect(element, event, minWeight, maxWeight, maxDistance) {
+                const rect = element.getBoundingClientRect();
+                const distanceX = Math.abs(event.clientX - (rect.left + rect.width / 2));
+                const distanceY = Math.abs(event.clientY - (rect.top + rect.height / 2));
+                const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+                let weight = minWeight;
+                if (distance < maxDistance) {
+                    weight = maxWeight - (distance / maxDistance) * (maxWeight - minWeight);
+                }
+
+                element.style.fontVariationSettings = `'wght' ${weight}`;
+            }
+
+            // Mouse movement event listener for animated text
+            document.addEventListener('mousemove', function (event) {
+                document.querySelectorAll('.animated-text span').forEach(function (char) {
+                    applyFontWeightEffect(char, event, minWeightCenter, maxWeightCenter, maxDistanceCenter);
+                });
+
+                document.querySelectorAll('.signature span').forEach(function (char) {
+                    applyFontWeightEffect(char, event, minWeightSignature, maxWeightSignature, maxDistanceSignature);
+                });
+            });
+
+            // Reset font weight when cursor leaves
+            document.querySelectorAll('.animated-text span, .signature span').forEach(function (char) {
+                char.addEventListener('mouseleave', function () {
+                    this.style.fontVariationSettings = `'wght' ${minWeightCenter}`; // or minWeightSignature as appropriate
+                });
+            });
+
+            // Menu button functionality
+            menuBtn.addEventListener('click', function () {
+                if (!isMenuOpen) {
+                    fullscreenMenu.style.top = '0';
+                    menuBtn.textContent = 'Close';
+                    isMenuOpen = true;
+                } else {
+                    fullscreenMenu.style.top = '-100%';
+                    menuBtn.textContent = 'Tracklist';
+                    isMenuOpen = false;
+                }
+            });
+
+            // Play/Pause button functionality
+            playPauseBtn.addEventListener('click', function () {
+                if (myAudio.paused) {
+                    myAudio.play();
+                    this.textContent = 'Pause';
+                } else {
+                    myAudio.pause();
+                    this.textContent = 'Play';
+                }
+            });
+
+            // Mute/Unmute button functionality
+            muteBtn.addEventListener('click', function () {
+                myAudio.muted = !myAudio.muted;
+                this.textContent = myAudio.muted ? 'Unmute' : 'Mute';
+            });
+
+            // Seek bar functionality
+            myAudio.addEventListener('timeupdate', function () {
+                var position = myAudio.currentTime / myAudio.duration;
+                seekBar.value = position * 100;
+            });
+
+            seekBar.addEventListener('input', function () {
+                var time = myAudio.duration * (this.value / 100);
+                myAudio.currentTime = time;
+            });
+
+            // Text animation and mouse event handlers
+            // Add any existing code for text animation and mouse events here
+
+            // ... any additional functionalities ...
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water for Sunrise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@100..1000&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles4.css">
+    <script src="js/script4.js"></script>
+    <script src="blotter.min.js"></script>
+</head>
+
+<body>
+    <!-- Tracklist Button -->
+    <button id="menu-toggle-btn" class="menu-btn">Tracklist</button>
+
+    <!-- About Button -->
+    <button id="about-toggle-btn" class="about-btn">About</button>
+
+    <div id="distortion-text"></div>
+
+    <!-- Full Screen Menu -->
+    <div id="fullscreen-menu" class="fullscreen-menu">
+        <ul id="track-list">
+            <li data-track="mp3/warm-winter.mp3" data-length="4:15">1. Warm Winter <span class="track-length">4:15</span></li>
+            <li data-track="mp3/july.mp3" data-length="3:58">2. July <span class="track-length">3:58</span></li>
+            <li data-track="mp3/hero-of-nothing.mp3" data-length="4:32">3. Hero of Nothing <span class="track-length">4:32</span></li>
+            <li data-track="mp3/swirl.mp3" data-length="3:49">4. Swirl <span class="track-length">3:49</span></li>
+            <li data-track="mp3/mess.mp3" data-length="4:20">5. Mess <span class="track-length">4:20</span></li>
+            <li data-track="mp3/mirror-instance.mp3" data-length="3:54">6. Mirror Instance <span class="track-length">3:54</span></li>
+            <li data-track="mp3/house.mp3" data-length="4:10">7. House <span class="track-length">4:10</span></li>
+            <li data-track="mp3/current-function.mp3" data-length="4:02">8. Current Function <span class="track-length">4:02</span></li>
+            <li data-track="mp3/mirror-of-connection.mp3" data-length="3:43">9. Mirror of Connection <span class="track-length">3:43</span></li>
+            <li data-track="mp3/its-around-me.mp3" data-length="4:01">10. It's Around Me <span class="track-length">4:01</span></li>
+            <li data-track="mp3/december.mp3" data-length="4:08">11. December <span class="track-length">4:08</span></li>
+            <li data-track="mp3/place-of-nothing.mp3" data-length="4:24">12. Place of Nothing <span class="track-length">4:24</span></li>
+            <li data-track="mp3/door.mp3" data-length="4:19">13. Door <span class="track-length">4:19</span></li>
+            <li data-track="mp3/skipped-out.mp3" data-length="4:17">14. Skipped Out <span class="track-length">4:17</span></li>
+            <li data-track="mp3/height-of-nothing.mp3" data-length="3:44">15. Height of Nothing <span class="track-length">3:44</span></li>
+            <li data-track="mp3/hipfire-oasis.mp3" data-length="4:22">16. Hipfire Oasis <span class="track-length">4:22</span></li>
+            <li data-track="mp3/growth-spiral.mp3" data-length="4:00">17. Growth Spiral <span class="track-length">4:00</span></li>
+            <li data-track="mp3/heart-of-nothing.mp3" data-length="3:59">18. Heart of Nothing <span class="track-length">3:59</span></li>
+            <!-- Add more tracks as needed -->
+        </ul>
+    </div>
+
+        <!-- Full Screen Menu (About) -->
+        <div id="about-menu" class="fullscreen-about-menu">
+            <div class="centered-about-text">
+                Immerse yourself in the tranquil world of "Water for Sunrise," the latest ambient album by Brian Ecklund. This digital experience is a meditative journey through serene soundscapes, echoing the gentle rise of dawn. Each track weaves together soft, flowing melodies and delicate harmonies, inviting listeners into a peaceful realm. Perfect for moments of reflection or relaxation, this album is a soothing balm for the soul.</div>
+               <div class="signature">
+        <span>A</span><span>
+        </span><span>D</span><span>i</span><span>g</span><span>i</span><span>t</span><span>a</span><span>l</span><span>
+        </span><span>E</span><span>x</span><span>p</span><span>r</span><span>e</span><span>s</span><span>s</span><span>i</span><span>o</span><span>n</span><span>
+        </span><span>b</span><span>y</span><span>
+        </span><span>B</span><span>r</span><span>i</span><span>a</span><span>n</span><span> </span><span>E</span><span>c</span><span>k</span><span>l</span><span>u</span><span>n</span><span>d</span>
+    </div>
+        </div>
+
+    <!-- Audio Player Container-->
+    <div id="audio-player-container" class="bottom-center-audio-player">
+        <audio id="my-audio" preload="auto">
+            Your browser does not support the audio tag.
+        </audio>
+        <button id="previous-track-btn"><</button>
+        <button id="play-pause-btn">Play</button>
+        <button id="next-track-btn">></button>
+        <span id="current-time">0:00</span>
+        <input type="range" id="seek-bar" value="0">
+        <span id="remaining-time">0:00</span>
+        <button id="mute-btn">Mute</button>
+    </div>
+
+    <!-- Add the GIF image -->
+    <img src="globe.gif" alt="Animated GIF" class="gif-image">
+
+    <img src="Spotify_Logo_RGB_White.png" alt="Spotify Logo" class="spotify-logo">
+
+    <div class="animated-text">
+        <!-- Wrap each character in its own span for "Water for Sunrise" -->
+        <span>W</span><span>a</span><span>t</span><span>e</span><span>r</span>
+        <span class="word-spacing"></span> <!-- Word spacing -->
+        <span>f</span><span>o</span><span>r</span>
+        <span class="word-spacing"></span> <!-- Word spacing -->
+        <span>S</span><span>u</span><span>n</span><span>r</span><span>i</span><span>s</span><span>e</span>
+    </div>
+   
+<script>
+// BLOTTER - Example 2
+var text = new Blotter.Text("observation", {
+  family : "'EB Garamond', serif",
+  size : 27,
+  fill : "#171717",
+  paddingLeft : 40,
+  paddingRight : 40
+});
+
+var material = new Blotter.LiquidDistortMaterial();
+
+// Play with the value for uSpeed. Lower values slow
+// down animation, while higher values speed it up. At
+// a speed of 0.0, animation is stopped entirely.
+material.uniforms.uSpeed.value = 0.25;
+
+// Try uncommenting the following line to play with
+// the "volatility" of the effect. Higher values here will
+// produce more dramatic changes in the appearance of your
+// text as it animates, but you will likely want to keep
+// the value below 1.0.
+//material.uniforms.uVolatility.value = 0.30;
+
+var blotter = new Blotter(material, {
+  texts : text
+});
+
+var elem = document.getElementById("distortion-text");
+var scope = blotter.forText(text);
+
+scope.appendTo(elem);
+
+</script>    
+</body>
+
+</html>

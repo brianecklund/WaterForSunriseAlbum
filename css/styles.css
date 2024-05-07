@@ -1,0 +1,249 @@
+body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Roboto Flex', sans-serif;
+            background: url('/bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .animated-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            user-select: none;
+            font-size: calc(4vw + 4vh); /* Larger text size */
+        }
+
+        .animated-text span {
+            font-family: 'Roboto Flex', sans-serif;
+            font-variation-settings: 'wght' 400;
+            font-size: calc(5vw + 1vmin);
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .animated-text span:hover {
+            font-variation-settings: 'wght' 1000;
+        }
+
+        .animated-text .word-spacing {
+            margin: 0 1vw;
+            /* Margin for word spacing */
+        }
+
+        .signature {
+            position: fixed;
+            bottom: 50px;
+            right: 50px;
+            font-family: 'Roboto Flex', sans-serif;
+            font-variation-settings: 'wght' 400;
+            font-size: 1.5em;
+            color: white;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: transform 0.5s ease-out, font-variation-settings 0.3s ease;
+            user-select: none;
+        }
+
+        .spotify-logo {
+            position: fixed;
+            bottom: 40px;
+            left: 40px;
+            max-width: 150px;
+            max-height: 150px;
+        }
+
+        .gif-image {
+            position: fixed;
+            top: 25px;
+            left: 0px;
+            width: 144px;
+            height: 108px;
+            z-index: 100;
+            mix-blend-mode: screen;
+            user-select: none;
+        }
+
+        .bottom-center-audio-player {
+            position: fixed;
+            bottom: 50px;
+            /* 50 pixels from the bottom edge */
+            left: 50%;
+            /* Centered horizontally */
+            transform: translateX(-50%);
+            /* Adjust for the center alignment */
+            display: flex;
+            /* Aligns the child elements (buttons and slider) in a row */
+            align-items: center;
+            /* Center-align the items vertically */
+            gap: 10px;
+            /* Optional: Adds some space between the buttons and the slider */
+        }
+
+        .clickable-word {
+            font-family: 'Roboto Flex', sans-serif;
+            /* Choose your desired font */
+            font-variation-settings: 'wght' 400;
+            font-size: 1rem;
+            /* Adjust font size as needed */
+            line-height: 5px;
+            color: white;
+            /* Choose your text color */
+            cursor: pointer;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            /* Smooth transition for animation and fade */
+            opacity: 0;
+            /* Start with text invisible */
+        }
+
+        .clickable-word.visible {
+            opacity: 1;
+            /* Make text visible on click */
+        }
+
+        .menu-btn {
+            position: fixed;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1001;
+            background: none;
+            border: 1px solid white;
+            border-radius: 40px;
+            padding: 10px 25px;
+            color: white;
+        }
+
+        .fullscreen-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 1); /* Opaque */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s, visibility 0.5s;
+            z-index: 1000;
+        }
+        
+        .fullscreen-menu.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        #track-list {
+            width: 60vw;
+            max-width: 50vh;
+            height: 70vh;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            text-align: left;
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+        
+        #track-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: calc(1vw + 1vh); /* Responsive font size */
+            margin: 8px 0;
+            color: white;
+            cursor: pointer;
+            padding: 8px 12px 8px 12px;
+            border-radius: 30px;
+        }
+
+        #track-list li:hover {
+            background-color: white;
+            color: black;
+        }
+        
+        .track-length {
+            color: gray;
+            margin-left: 10px;
+        }
+        
+        /* Hide all other elements when fullscreen menu is visible */
+        body.menu-open .bottom-center-audio-player,
+        body.menu-open .gif-image,
+        body.menu-open .animated-text,
+        body.menu-open .signature,
+        body.menu-open #falling-text-container {
+            display: none;
+        }
+
+        #falling-text-container {
+            position: fixed;
+            bottom: 30px;
+            width: 100%;
+            text-align: center;
+            overflow: hidden;
+            display: none;
+            z-index: 101;
+        }
+
+        #falling-text {
+            position: absolute;
+            bottom: 0;
+            color: white;
+            animation: fall-up 5s linear forwards;
+        }
+
+        @keyframes fall-up {
+            0% {
+                bottom: 30px;
+                opacity: 1;
+            }
+
+            90% {
+                bottom: 100vh;
+                opacity: 0.5;
+            }
+
+            100% {
+                bottom: 110vh;
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            /* Tablet and mobile view */
+            .signature {
+                position: fixed;
+                bottom: 20px;
+                /* 20px from the bottom edge */
+                left: 0;
+                right: 0;
+                width: 100%;
+                text-align: center;
+                transform: none;
+                /* Remove the translateX transformation */
+            }
+
+            .bottom-center-audio-player {
+                bottom: 70px;
+                /* Positioned above the signature */
+            }
+
+            .fullscreen-menu #track-list {
+                width: 80%;
+                /* 80% of the width of the menu */
+            }
+        }

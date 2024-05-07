@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water for Sunrise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@100..1000&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/script.js"></script>
+</head>
+
+<body>
+    <!-- Menu Button -->
+    <button id="menu-toggle-btn" class="menu-btn">Tracklist</button>
+
+
+    <!-- Full Screen Menu -->
+    <div id="fullscreen-menu" class="fullscreen-menu">
+        <ul id="track-list">
+            <li data-track="mp3/warm-winter.mp3" data-length="4:15">1. Warm Winter <span class="track-length">4:15</span></li>
+            <li data-track="mp3/july.mp3" data-length="3:58">2. July <span class="track-length">3:58</span></li>
+            <li data-track="mp3/hero-of-nothing.mp3" data-length="4:32">3. Hero of Nothing <span class="track-length">4:32</span></li>
+            <li data-track="mp3/swirl.mp3" data-length="3:49">4. Swirl <span class="track-length">3:49</span></li>
+            <li data-track="mp3/mess.mp3" data-length="4:20">5. Mess <span class="track-length">4:20</span></li>
+            <li data-track="mp3/mirror-instance.mp3" data-length="3:54">6. Mirror Instance <span class="track-length">3:54</span></li>
+            <li data-track="mp3/house.mp3" data-length="4:10">7. House <span class="track-length">4:10</span></li>
+            <li data-track="mp3/current-function.mp3" data-length="4:02">8. Current Function <span class="track-length">4:02</span></li>
+            <li data-track="mp3/mirror-of-connection.mp3" data-length="3:43">9. Mirror of Connection <span class="track-length">3:43</span></li>
+            <li data-track="mp3/its-around-me.mp3" data-length="4:01">10. It's Around Me <span class="track-length">4:01</span></li>
+            <li data-track="mp3/december.mp3" data-length="4:08">11. December <span class="track-length">4:08</span></li>
+            <li data-track="mp3/place-of-nothing.mp3" data-length="4:24">12. Place of Nothing <span class="track-length">4:24</span></li>
+            <li data-track="mp3/door.mp3" data-length="4:19">13. Door <span class="track-length">4:19</span></li>
+            <li data-track="mp3/skipped-out.mp3" data-length="4:17">14. Skipped Out <span class="track-length">4:17</span></li>
+            <li data-track="mp3/height-of-nothing.mp3" data-length="3:44">15. Height of Nothing <span class="track-length">3:44</span></li>
+            <li data-track="mp3/hipfire-oasis.mp3" data-length="4:22">16. Hipfire Oasis <span class="track-length">4:22</span></li>
+            <li data-track="mp3/growth-spiral.mp3" data-length="4:00">17. Growth Spiral <span class="track-length">4:00</span></li>
+            <li data-track="mp3/heart-of-nothing.mp3" data-length="3:59">18. Heart of Nothing <span class="track-length">3:59</span></li>
+            <!-- Add more tracks as needed -->
+        </ul>
+    </div>
+
+    <div class="essential_audio" data-url="your_audio_URL"></div>
+
+    <!-- Audio Player Container-->
+    <div id="audio-player-container" class="bottom-center-audio-player">
+        <audio id="my-audio" preload="auto">
+            <source src="classical.mp3" type="audio/mp3">
+            Your browser does not support the audio tag.
+        </audio>
+        <button id="play-pause-btn">Play</button>
+        <input type="range" id="seek-bar" value="0">
+        <button id="mute-btn">Mute</button>
+    </div>
+
+    <!-- Add the GIF image -->
+    <img src="globe.gif" alt="Animated GIF" class="gif-image">
+
+    <img src="Spotify_Logo_RGB_White.png" alt="Spotify Logo" class="spotify-logo">
+
+    <div class="animated-text">
+        <!-- Wrap each character in its own span for "Water for Sunrise" -->
+        <span>W</span><span>a</span><span>t</span><span>e</span><span>r</span>
+        <span class="word-spacing"></span> <!-- Word spacing -->
+        <span>f</span><span>o</span><span>r</span>
+        <span class="word-spacing"></span> <!-- Word spacing -->
+        <span>S</span><span>u</span><span>n</span><span>r</span><span>i</span><span>s</span><span>e</span>
+    </div>
+
+    <div class="signature">
+        <!-- Wrap each character in its own span -->
+        <span>A</span><span>
+        </span><span>D</span><span>i</span><span>g</span><span>i</span><span>t</span><span>a</span><span>l</span><span>
+        </span><span>E</span><span>x</span><span>p</span><span>r</span><span>e</span><span>s</span><span>s</span><span>i</span><span>o</span><span>n</span><span>
+        </span><span>b</span><span>y</span><span>
+        </span><span>B</span><span>r</span><span>i</span><span>a</span><span>n</span><span> </span><span>E</span><span>c</span><span>k</span><span>l</span><span>u</span><span>n</span><span>d</span>
+    </div>
+
+    <div id="falling-text-container">
+        <div id="falling-text">Enjoy the music and relax...</div>
+    </div>
+</body>
+
+</html>
